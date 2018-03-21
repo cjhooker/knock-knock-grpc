@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package KnockKnock;
+
+service KnockKnockService {
+    rpc RequestKnockKnock (KnockKnockRequest) returns (KnockKnockResponse) {}
+}
+
+message KnockKnockRequest {
+  string line = 1;
+}
+
+message KnockKnockResponse {
+  string line = 1;
+  bool isPunchLine = 2;
+}
