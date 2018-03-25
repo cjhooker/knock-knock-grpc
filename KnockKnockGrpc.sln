@@ -10,6 +10,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnockKnockClient", "KnockKn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockKnockClientInteractive", "KnockKnockClientInteractive\KnockKnockClientInteractive.csproj", "{A1F6AAD5-F28A-45B3-9C49-B8F48B93F624}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockKnockServer.Tests", "KnockKnockServer.Tests\KnockKnockServer.Tests.csproj", "{BC24686C-E647-4F55-9026-C9E17E3A0873}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,18 @@ Global
 		{A1F6AAD5-F28A-45B3-9C49-B8F48B93F624}.Release|x64.Build.0 = Release|Any CPU
 		{A1F6AAD5-F28A-45B3-9C49-B8F48B93F624}.Release|x86.ActiveCfg = Release|Any CPU
 		{A1F6AAD5-F28A-45B3-9C49-B8F48B93F624}.Release|x86.Build.0 = Release|Any CPU
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Debug|x64.ActiveCfg = Debug|x64
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Debug|x64.Build.0 = Debug|x64
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Debug|x86.ActiveCfg = Debug|x86
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Debug|x86.Build.0 = Debug|x86
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Release|x64.ActiveCfg = Release|x64
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Release|x64.Build.0 = Release|x64
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Release|x86.ActiveCfg = Release|x86
+		{BC24686C-E647-4F55-9026-C9E17E3A0873}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

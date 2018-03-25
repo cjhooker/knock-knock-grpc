@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="grpc" Version="1.10.0" />
     <PackageReference Include="NewtonSoft.Json" Version="11.0.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -72,7 +72,7 @@ namespace KnockKnockServer
                     var requestLine = jokeSession.Joke.Lines
                         .Select((l, i) => new {Line = l, Index = i})
                         .FirstOrDefault(x => 
-                            x.Line.Request.Equals(request.Line, StringComparison.InvariantCultureIgnoreCase) && x.Index > jokeSession.LastLineIndex);
+                            StringUtilities.AreEqualAlphaNumeric(x.Line.Request, request.Line) && x.Index > jokeSession.LastLineIndex);
                     if (requestLine == null) 
                     {
                         var correctRequestLine = jokeSession.Joke.Lines
