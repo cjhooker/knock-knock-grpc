@@ -25,5 +25,19 @@
       { "request": "Who's there?", "response": "To" },
       { "request": "To who?", "response": "You mean \"To whom?\"" }
     ]
+  },
+  {
+    "jokeId": 4,
+    "lines": [
+      { "request": "Who's there?", "response": "Police" },
+      { "request": "Police who?", "response": "Police stop telling these awful knock-knock jokes!" }
+    ]
+  },
+  {
+    "jokeId": 5,
+    "lines": [
+      { "request": "Who's there?", "response": "Déja" },
+      { "request": "Déja who?", "response": "Knock knock!" }
+    ]
   }
 ]

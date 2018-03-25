@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Grpc.Core;
 using KnockKnock;
@@ -25,30 +26,47 @@ namespace KnockKnockServer
         
         public override async Task<KnockKnockResponse> RequestKnockKnock(KnockKnockRequest request, ServerCallContext context)
         {
-            // var jokeId = 1;
-            // var joke = _Jokes.Single(j => j.JokeId == jokeId);
-
             return await Task.Run(async () => {
                 string line;
                 var isPunchLine = false;
                 JokeSession jokeSession;
+                Regex jokeStartRegex = new Regex("Tell me( a)? knock knock joke( number ([0-9]+))?");
 
                 Console.WriteLine("Request: " + request.Line);
-                if (request.Line == "Tell me a knock knock joke")
+                if (jokeStartRegex.IsMatch(request.Line))
                 {
+                    // Start a joke
+                    Joke joke;
+                    var match = jokeStartRegex.Match(request.Line);
+                    if (match.Groups[3].Length > 0)
+                    {
+                        var jokeId = int.Parse(match.Groups[3].Value);
+                        joke = _Jokes.Single(j => j.JokeId == jokeId);
+                    }
+                    else
+                    {
+                        joke = _Jokes[_Random.Next(_Jokes.Count)];
+                    }
+
                     line = "Knock knock!";
                     jokeSession = new JokeSession {
                         JokeSessionId = _NextJokeSessionId++,
-                        Joke = _Jokes[_Random.Next(_Jokes.Count)],
+                        Joke = joke,
                         LastLineIndex = -1
                     };
                     _JokeSessions.Add(jokeSession);
                 }
                 else
                 {
+                    // Respond to a joke
+
+                    // Client should be sending request header with jokesessionid so we know which joke we're telling
+                    // and where we are in the joke.
                     Metadata metadata = context.RequestHeaders;
                     var jokeSessionId = int.Parse(metadata.Single(md => md.Key == "jokesessionid").Value);
                     jokeSession = _JokeSessions.Single(js => js.JokeSessionId == jokeSessionId);
+
+                    // Look up the client's line to find the response to it
                     var requestLine = jokeSession.Joke.Lines
                         .Select((l, i) => new {Line = l, Index = i})
                         .FirstOrDefault(x => x.Line.Request == request.Line && x.Index > jokeSession.LastLineIndex);
@@ -68,11 +86,14 @@ namespace KnockKnockServer
 
                 Console.WriteLine("Response: " + line);
 
+                // Send the jokesessionid in the response headers
                 Metadata responseHeaders = new Metadata
                 {
-                    { "JokeSessionId", jokeSession.JokeSessionId.ToString() }
+                    { "jokesessionid", jokeSession.JokeSessionId.ToString() }
                 };
                 await context.WriteResponseHeadersAsync(responseHeaders);
+
+                // Send the response
                 return new KnockKnockResponse { Line = line, IsPunchLine = isPunchLine };
             });
         }
