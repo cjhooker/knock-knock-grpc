@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="grpc" Version="1.10.0" />
+    <PackageReference Include="NewtonSoft.Json" Version="11.0.1" />
   </ItemGroup>
 
   <ItemGroup>

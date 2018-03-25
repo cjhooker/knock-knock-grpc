@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Grpc.Core;
 using KnockKnock;
 
@@ -14,6 +15,9 @@ namespace KnockKnockClient
 
             KnockKnockResponse response = new KnockKnockResponse { Line = "", IsPunchLine = false };
 
+            var lastLineWhosThere = false;
+            string jokeSessionId = null;
+
             while (!response.IsPunchLine)
             {
                 string line;
@@ -24,13 +28,29 @@ namespace KnockKnockClient
                 else if (response.Line == "Knock knock!")
                 {
                     line = "Who's there?";
+                    lastLineWhosThere = true;
+                }
+                else if (lastLineWhosThere)
+                {
+                    line = response.Line + " who?";
+                    lastLineWhosThere = false;
                 }
                 else
                 {
-                    line = response.Line + " who?";
+                    Console.WriteLine("I don't know how to respond to that.");
+                    break;
                 }
                 Console.WriteLine("Request: " + line);
-                response = client.RequestKnockKnock(new KnockKnockRequest { Line = line });
+                Metadata metadata = new Metadata();
+                if (jokeSessionId != null)
+                {
+                    metadata.Add("JokeSessionId", jokeSessionId);
+                }
+                var call = client.RequestKnockKnockAsync(new KnockKnockRequest { Line = line }, metadata);
+                var responseHeaders = call.ResponseHeadersAsync.Result;
+                response = call.ResponseAsync.Result;
+                jokeSessionId = responseHeaders.Single(md => md.Key == "jokesessionid").Value;
+                //Console.WriteLine("JokeSessionId set to " + jokeSessionId);
                 Console.WriteLine("Response: " + response.Line);
             }
 

@@ -1,0 +1,29 @@
+[
+    {
+        "jokeId": 1,
+        "lines": [
+            { "request": "Who's there?", "response": "Boo" },
+            { "request": "Boo who?", "response": "Don't cry, it's just a knock knock joke!" }
+        ]
+    },
+  {
+    "jokeId": 2,
+    "lines": [
+      { "request": "Who's there?", "response": "Banana" },
+      { "request": "Banana who?", "response": "Knock knock!" },
+      { "request": "Who's there?", "response": "Banana" },
+      { "request": "Banana who?", "response": "Knock knock!" },
+      { "request": "Who's there?", "response": "Banana" },
+      { "request": "Banana who?", "response": "Knock knock!" },
+      { "request": "Who's there?", "response": "Orange" },
+      { "request": "Orange who?", "response": "Orange you glad I didn't say banana?" }
+    ]
+  },
+  {
+    "jokeId": 3,
+    "lines": [
+      { "request": "Who's there?", "response": "To" },
+      { "request": "To who?", "response": "You mean \"To whom?\"" }
+    ]
+  }
+]
