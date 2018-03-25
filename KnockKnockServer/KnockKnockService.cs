@@ -30,7 +30,9 @@ namespace KnockKnockServer
                 string line;
                 var isPunchLine = false;
                 JokeSession jokeSession;
-                Regex jokeStartRegex = new Regex("Tell me( a)? knock knock joke( number ([0-9]+))?");
+                Regex jokeStartRegex = new Regex(
+                    "Tell me(?: a)?(?: knock knock)? joke(?:(?: number)? (?<JokeNumber>[0-9]+))?",
+                    RegexOptions.IgnoreCase);
 
                 Console.WriteLine("Request: " + request.Line);
                 if (jokeStartRegex.IsMatch(request.Line))
@@ -38,9 +40,9 @@ namespace KnockKnockServer
                     // Start a joke
                     Joke joke;
                     var match = jokeStartRegex.Match(request.Line);
-                    if (match.Groups[3].Length > 0)
+                    if (match.Groups["JokeNumber"].Length > 0)
                     {
-                        var jokeId = int.Parse(match.Groups[3].Value);
+                        var jokeId = int.Parse(match.Groups["JokeNumber"].Value);
                         joke = _Jokes.Single(j => j.JokeId == jokeId);
                     }
                     else
@@ -69,10 +71,15 @@ namespace KnockKnockServer
                     // Look up the client's line to find the response to it
                     var requestLine = jokeSession.Joke.Lines
                         .Select((l, i) => new {Line = l, Index = i})
-                        .FirstOrDefault(x => x.Line.Request == request.Line && x.Index > jokeSession.LastLineIndex);
+                        .FirstOrDefault(x => 
+                            x.Line.Request.Equals(request.Line, StringComparison.InvariantCultureIgnoreCase) && x.Index > jokeSession.LastLineIndex);
                     if (requestLine == null) 
                     {
-                        line = "That's not a valid line! Don't you know how knock knock jokes work?";
+                        var correctRequestLine = jokeSession.Joke.Lines
+                            .Select((l, i) => new {Line = l, Index = i})
+                            .FirstOrDefault(x => x.Index == jokeSession.LastLineIndex + 1);
+
+                        line = $"That's not a valid line! Don't you know how knock knock jokes work? Try saying \"{correctRequestLine.Line.Request}\"";
                     }
                     else
                     {
