@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Grpc.Core;
 using KnockKnock;
@@ -17,8 +18,13 @@ namespace KnockKnockClient
                 jokeId = int.Parse(args[0]);
             }
 
-            // Set up channel and client
-            Channel channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
+            // Set up channel and client with SSL cert
+            var cacert = File.ReadAllText(@"..\certs\ca.crt");
+            var clientcert = File.ReadAllText(@"..\certs\client.crt");
+            var clientkey = File.ReadAllText(@"..\certs\client.key");
+            var credentials = new SslCredentials(cacert, new KeyCertificatePair(clientcert, clientkey));
+            
+            Channel channel = new Channel("localhost", 50051, credentials);
             var client = new KnockKnock.KnockKnockService.KnockKnockServiceClient(channel);
 
             // Start with an empty response for our while loop

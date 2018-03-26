@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Grpc.Core;
 using KnockKnock;
 
@@ -10,10 +12,19 @@ namespace KnockKnockServer
 
         static void Main(string[] args)
         {
+            var cacert = File.ReadAllText(@"..\certs\ca.crt");
+            var cert = File.ReadAllText(@"..\certs\server.crt");
+            var key = File.ReadAllText(@"..\certs\server.key");
+            var keypair = new KeyCertificatePair(cert, key);
+            var credentials = new SslServerCredentials(new List<KeyCertificatePair> 
+            {
+                keypair
+            }, cacert, false);
+
             Server server = new Server
             {
                 Services = { KnockKnock.KnockKnockService.BindService(new KnockKnockService()) },
-                Ports = { new ServerPort("localhost", Port, ServerCredentials.Insecure) }
+                Ports = { new ServerPort("0.0.0.0", Port, credentials) }
             };
             server.Start();
 
